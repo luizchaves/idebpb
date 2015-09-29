@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style media="screen">
+    /*div#map {
+      display: inline-block;
+      width: 70%;
+    }
+
+    div#info {
+      display: inline-block;
+      width: 25%;
+    }*/
+
+    svg {
+      border: 1px solid #000;
+    }
+
+    .city {
+      /*fill: #e5e5e5;*/
+      /*fill: #9accfe;*/
+      fill: #fff;
+      /*stroke: #fff;*/
+      stroke: #ccc;
+      stroke-width: 1px;
+    }
+
+    .city:hover {
+      fill: steelblue !important;
+    }
+
+    .micro {
+      fill: none;
+      stroke: #000;
+      /*stroke: #999;*/
+      stroke-width: 1px;
+    }
+    /*.meso {
+      fill: none;
+      stroke: #000;
+      stroke-width: 2px;
+    }*/
+  </style>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+</head>
+
+<body>
+  <h1>IDEB Estadual 2013</h1>
+  <div id="map"></div>
+  <div id="info"></div>
+  <script type="text/javascript">
+    // replace all accented characters
+    var accentsTidy = function(s) {
+      var r = s.toLowerCase();
+      // r = r.replace(new RegExp("\\s", 'g'), "");
+      r = r.replace(new RegExp("[àáâãäå]", 'g'), "a");
+      r = r.replace(new RegExp("æ", 'g'), "ae");
+      r = r.replace(new RegExp("ç", 'g'), "c");
+      r = r.replace(new RegExp("[èéêë]", 'g'), "e");
+      r = r.replace(new RegExp("[ìíîï]", 'g'), "i");
+      r = r.replace(new RegExp("ñ", 'g'), "n");
+      r = r.replace(new RegExp("[òóôõö]", 'g'), "o");
+      r = r.replace(new RegExp("œ", 'g'), "oe");
+      r = r.replace(new RegExp("[ùúûü]", 'g'), "u");
+      r = r.replace(new RegExp("[ýÿ]", 'g'), "y");
+      // r = r.replace(new RegExp("\\W", 'g'), "");
+      return r;
+    };
+
+    var getIdeb = function(name) {
+      var index = accentsTidy(name.toLowerCase());
+      return (isNaN(dataset[index])) ? "-" : dataset[index];
+    }
+
+    var color = d3.scale.linear()
+      .domain([0, 5])
+      .range(['#F7FBFF', '#08306B']);
+
+    var width = 800,
+      height = 500;
+
+    var projection = d3.geo.mercator()
+      .center([-36.3, -7.2])
+      .scale(11000);
+
+    var path = d3.geo.path()
+      .projection(projection);
+
+    var svg = d3.select("div#map").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    var dataset = [];
+    d3.csv("data/ideb-estadual-pb-2013.csv", function(data) {
+      data.map(function(d) {
+        dataset[d["city"].toLowerCase()] = +d["ideb"];
+      });
+    });
+
+    d3.json("data/pb-municipalities.json", function(error, pb) {
+      if (error)
+        return console.error(error);
+
+      var city = topojson.feature(pb, pb.objects.municipalities);
+
+      svg.selectAll('.city')
+        .data(city.features)
+        .enter()
+        .append('path')
+        .attr('class', 'city')
+        .style('fill', function(d) {
+          var name = d.properties.name;
+          return color(getIdeb(name))
+        })
+        .attr('d', path)
+        .on('mouseover', function(d) {
+          var name = d.properties.name;
+          return d3.select('div#info').html(
+            "<h2>" + name + "</h2><p><b>IDEB:</b> " + getIdeb(name) + "</p>"
+          );
+        });
+    });
+
+    d3.json("data/pb-micro.json", function(error, pb) {
+      if (error)
+        return console.error(error);
+
+      var micro = topojson.feature(pb, pb.objects.micro);
+
+      svg.selectAll('.micro')
+        .data(micro.features)
+        .enter()
+        .append('path')
+        .attr('class', 'micro')
+        .attr('d', path);
+    });
+
+    // d3.json("data/pb-meso.json", function(error, pb) {
+    //   if (error)
+    //     return console.error(error);
+    //
+    //   var meso = topojson.feature(pb, pb.objects.meso);
+    //
+    //   svg.selectAll('.meso')
+    //     .data(meso.features)
+    //     .enter()
+    //     .append('path')
+    //     .attr('class', 'meso')
+    //     .attr('d', path);
+    // });
+  </script>
+</body>
+
+</html>

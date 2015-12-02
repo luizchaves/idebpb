@@ -1,0 +1,24 @@
+# Fonte dos Dados
+
+## Mapa PB
+
+- ftp://geoftp.ibge.gov.br/malhas_digitais/municipio_2010/pb/
+
+## Mapa JP
+
+- http://geo.joaopessoa.pb.gov.br/digeoc/htmls/
+
+## PIB per capita, PIB, Densidade, População, Área
+
+- https://pt.wikipedia.org/wiki/Microrregi%C3%A3o_do_Litoral_Sul_(Para%C3%ADba)
+
+## IDEB
+
+- http://www.qedu.org.br/ideb
+- http://portal.inep.gov.br/basica-levantamentos-acessar
+- http://portal.inep.gov.br/basica-censo
+- http://portal.inep.gov.br/web/portal-ideb/planilhas-para-download
+- http://portal.inep.gov.br/web/portal-ideb
+- http://www.dataescolabrasil.inep.gov.br/dataEscolaBrasil/
+- http://www.qedu.org.br/
+- http://www.brasil.gov.br/educacao/2015/03/censo-e-ideb-mapeam-dados-sobre-escolas-brasileiras

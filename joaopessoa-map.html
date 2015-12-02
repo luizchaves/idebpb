@@ -59,7 +59,7 @@ var features = svg.append("g")
 //Create a tooltip, hidden at the start
 var tooltip = d3.select("body").append("div").attr("class","tooltip");
 
-d3.json("data/joaopessoa.topo.json",function(error,geodata) {
+d3.json("data/map/joaopessoa/joaopessoa.topo.json",function(error,geodata) {
   if (error) return console.log(error); //unknown error, check the console
 
   //Create a path for each map feature in the data

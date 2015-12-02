@@ -95,13 +95,13 @@
       .attr("height", height);
 
     var dataset = [];
-    d3.csv("data/ideb-estadual-pb-2013.csv", function(data) {
+    d3.csv("data/edu/ideb-estadual-pb-2013.csv", function(data) {
       data.map(function(d) {
         dataset[d["city"].toLowerCase()] = +d["ideb"];
       });
     });
 
-    d3.json("data/pb-municipalities.json", function(error, pb) {
+    d3.json("data/map/paraiba/pb-municipalities.json", function(error, pb) {
       if (error)
         return console.error(error);
 
